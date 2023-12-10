@@ -1,0 +1,48 @@
+version: '3'
+services:
+  # MongoDB Service
+  mongo:
+    image: mongo
+    ports:
+      - "27018:27017"
+    networks:
+      - mynet
+    volumes:
+      - mongo-data:/data/db
+      - ./mongo.sh:/etc/initdb.d/mongo-init.sh:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "root"
+      MONGO_INITDB_ROOT_PASSWORD: "root"
+      MONGODB_USER: "todos"
+      MONGODB_PASSWORD: "todos"
+      MONGODB_NAME: "todo"
+
+  # Express.js (Node.js) Backend Service
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: mongodb://mongo:27017/todo
+    networks:
+      - mynet
+
+  # React Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - mynet
+
+networks:
+  mynet:
+
+volumes:
+  mongo-data:
+
+  

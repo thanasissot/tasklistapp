@@ -9,7 +9,6 @@ services:
       - mynet
     volumes:
       - mongo-data:/data/db
-      - ./mongo.sh:/etc/initdb.d/mongo-init.sh:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: "root"
       MONGO_INITDB_ROOT_PASSWORD: "root"

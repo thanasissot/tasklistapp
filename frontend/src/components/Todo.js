@@ -100,7 +100,7 @@ function Todo() {
 		<div className="container mt-5"> 
 			<div className="row"> 
 				<div className="col-md-7"> 
-					<h2 className="text-center">Todo List</h2> 
+					<h2 className="text-center">Task List</h2> 
 					<div className="table-responsive"> 
 						<table className="table table-bordered"> 
 							<thead className="table-primary"> 

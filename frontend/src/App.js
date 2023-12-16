@@ -12,7 +12,7 @@ const headStyle = {
 } 
 return ( 
 	<div> 
-	<h1 style={headStyle}>Todo List</h1> 
+	<h1 style={headStyle}>Task List</h1> 
 	<BrowserRouter> 
 		<Routes> 
 		<Route path='/' element={<Todo/>}></Route> 

@@ -253,6 +253,7 @@ function Todo() {
 							<input 
 								className="form-control"
 								type="text"
+								placeholder="Enter Description"
 								onChange={(e) => setNewDescription(e.target.value)} 
 							/> 
 						</div>
@@ -261,6 +262,7 @@ function Todo() {
 							<input 
 								className="form-control"
 								type="text"
+								placeholder="Enter Category"
 								onChange={(e) => setNewCategory(e.target.value)} 
 							/> 
 						</div>  

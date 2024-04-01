@@ -22,11 +22,41 @@ app.get('/', (req, res) => {
 });
 
 // Connect to your MongoDB database (replace with your database URL) 
-mongoose.connect("mongodb://todos:todos@mongo:27017/todo", {
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-}
-); 
+(async () => {
+  try {
+    // Connect to the first MongoDB database
+    await mongoose.connect("mongodb://root:root@mongo:27017/todo?authSource=admin", 
+		{
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			serverSelectionTimeoutMS: 5000
+		}
+	);
+
+
+    const db = mongoose.connection;
+    await db.db.command({
+		        createUser: "todos",
+		        pwd: "todos",
+		        roles: [
+		            {"db":"todo", "role":"readWrite" }, 
+		        ]
+		    });
+
+    // Disconnect from the first MongoDB database
+    await mongoose.disconnect();
+    console.log('Disconnected from first MongoDB database');
+
+    await mongoose.connect("mongodb://todos:todos@mongo:27017/todo", 
+		{
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			serverSelectionTimeoutMS: 5000
+		});
+  } catch (error) {
+    console.error('Error connecting to or disconnecting from the first database:', error);
+  }
+})();
 
 
 // Check for database connection errors 
@@ -47,7 +77,9 @@ app.post("/api/addTodoList", (req, res) => {
 	TodoModel.create({ 
 		task: req.body.task, 
 		status: req.body.status, 
-		deadline: req.body.deadline, 
+		deadline: req.body.deadline,
+		description: req.body.description,
+		category: req.body.category  
 	}) 
 		.then((todo) => res.json(todo)) 
 		.catch((err) => res.json(err)); 
@@ -59,7 +91,9 @@ app.post("/api/updateTodoList/:id", (req, res) => {
 	const updateData = { 
 		task: req.body.task, 
 		status: req.body.status, 
-		deadline: req.body.deadline, 
+		deadline: req.body.deadline,
+		description: req.body.description,
+		category: req.body.category
 	}; 
 	TodoModel.findByIdAndUpdate(id, updateData) 
 		.then((todo) => res.json(todo)) 

@@ -10,10 +10,18 @@ const todoSchema = new mongoose.Schema({
 	status: { 
 		type: String, 
 		required: true, 
-	}, 
+	},
 	deadline: { 
 		type: Date, 
-	}, 
+	},	
+	description: { 
+		type: String, 
+		required: true, 
+	},
+	category: { 
+		type: String, 
+		required: true, 
+	},
 }); 
 
 
